@@ -1,4 +1,5 @@
-﻿using BookinistV1.Services;
+﻿using BookinistV1.Data;
+using BookinistV1.Services;
 using BookinistV1.ViewModels;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -18,6 +19,7 @@ namespace BookinistV1
         public static IServiceProvider Services => Host.Services;
 
         internal static void ConfigureServices(HostBuilderContext host, IServiceCollection services) => services
+            .AddDatabase(host.Configuration.GetSection("Database"))
             .AddServices()
             .AddViewModels()
             ;
