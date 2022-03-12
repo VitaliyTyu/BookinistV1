@@ -1,11 +1,8 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using BookinistV1.Services;
+using BookinistV1.ViewModels;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace BookinistV1
@@ -20,10 +17,11 @@ namespace BookinistV1
 
         public static IServiceProvider Services => Host.Services;
 
-        internal static void ConfigureServices(HostBuilderContext host, IServiceCollection services)
-        {
-            
-        }
+        internal static void ConfigureServices(HostBuilderContext host, IServiceCollection services) => services
+            .AddServices()
+            .AddViewModels()
+            ;
+
 
         protected override async void OnStartup(StartupEventArgs e)
         {

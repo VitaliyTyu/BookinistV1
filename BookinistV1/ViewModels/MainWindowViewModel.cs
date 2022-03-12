@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BookinistV1.ViewModels
 {
-    public class MainVindowViewModel : ViewModel
+    class MainWindowViewModel : ViewModel
     {
         #region Title : string - Заголовок
         /// <summary> Заголовок </summary>
