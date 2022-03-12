@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace BookinistV1.ViewModels
 {
+    //локатор ViewModel'ей
     public class ViewModelLocator
     {
 
