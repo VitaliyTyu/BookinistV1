@@ -14,5 +14,7 @@ namespace Bookinist.DAL.Entityes
         //у книги 1 катекория
         //Category - внешний ключ, но ef создаст его сам
         public virtual Category Category { get; set; }
+
+        public override string ToString() => $"Книга {Name}";
     }
 }

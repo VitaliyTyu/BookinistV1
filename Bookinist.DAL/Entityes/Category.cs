@@ -14,5 +14,7 @@ namespace Bookinist.DAL.Entityes
         //Books - внешний ключ, но ef создаст его сам
         //в категории много книг
         public virtual ICollection<Book> Books { get; set; }
+        public override string ToString() => $"Категория {Name}";
+
     }
 }
