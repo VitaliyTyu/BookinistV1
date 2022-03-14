@@ -27,6 +27,8 @@ namespace BookinistV1.Data
                         opt.UseInMemoryDatabase(Configuration.GetConnectionString(type));
                         break;
                 }
-            });
+            })
+            .AddTransient<DbInitializer>()
+            ;
     }
 }

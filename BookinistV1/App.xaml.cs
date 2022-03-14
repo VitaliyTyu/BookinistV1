@@ -28,13 +28,19 @@ namespace BookinistV1
         protected override async void OnStartup(StartupEventArgs e)
         {
             var host = Host;
+
+            //если сделаем с await, бд инициализируется после открытия окна приложения
+            using (var scope = Services.CreateScope())
+                scope.ServiceProvider.GetRequiredService<DbInitializer>().InitializeAsync().Wait();
+            //используя Wait() можно получить deadock, чтебы его избежать нужно у асинхронных методо вызывать .ConfigureAwait(false)
+
             base.OnStartup(e);
             await host.StartAsync();
         }
 
         protected override async void OnExit(ExitEventArgs e)
         {
-            using var host = Host; // ?
+            using var host = Host;
             base.OnExit(e);
             await host.StopAsync();
         }
