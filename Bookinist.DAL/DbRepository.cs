@@ -48,7 +48,7 @@ namespace Bookinist.DAL
         public void Update(T item)
         {
             if (item is null) throw new ArgumentNullException(nameof(item));
-            _db.Entry(item).State = EntityState.Modified; //отмесаем item как добавленную сущность
+            _db.Entry(item).State = EntityState.Modified; //отмесаем item как измененную сущность
             if (AutoSaveChanges)
                 _db.SaveChanges();
         }
@@ -76,7 +76,7 @@ namespace Bookinist.DAL
         {
             _db.Remove(new T { Id = id });
             if (AutoSaveChanges)
-                await _db.SaveChangesAsync();
+                await _db.SaveChangesAsync(Cancel).ConfigureAwait(false);
         }
     }
 }

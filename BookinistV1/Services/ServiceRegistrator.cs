@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using BookinistV1.Services.Interfaces;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace BookinistV1.Services
 {
@@ -6,6 +7,6 @@ namespace BookinistV1.Services
     static class ServiceRegistrator
     {
         public static IServiceCollection AddServices(this IServiceCollection services) => services
-            ;
+            .AddTransient<ISalesService, SalesService>();
     }
 }
