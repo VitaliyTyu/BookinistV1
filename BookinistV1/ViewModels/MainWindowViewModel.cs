@@ -12,6 +12,7 @@ using BookinistV1.Services.Interfaces;
 using System.Windows.Input;
 using MathCore.WPF.Commands;
 using MathCore.WPF.ViewModels;
+using Bookinist.DAL.Context;
 
 namespace BookinistV1.ViewModels
 {
@@ -20,7 +21,9 @@ namespace BookinistV1.ViewModels
         private readonly IRepository<Book> _Books;
         private readonly ISalesService _Sales;
         private readonly IRepository<Buyer> _Buyers;
+        private readonly IRepository<Deal> _Deals;
         private readonly IRepository<Seller> _Sellers;
+        private readonly ISalesService _SalesService;
 
 
 
@@ -85,7 +88,7 @@ namespace BookinistV1.ViewModels
 
         private void OnShowStatisticViewCommandExecuted()
         {
-            CurrentModel = new StatisticViewModel(_Books, _Buyers, _Sellers);
+            CurrentModel = new StatisticViewModel(_Books, _Buyers, _Sellers, _Deals, _SalesService);
         }
         #endregion
 
@@ -95,12 +98,14 @@ namespace BookinistV1.ViewModels
             IRepository<Book> Books, 
             ISalesService SalesService,
             IRepository<Buyer> Buyers,
+            IRepository<Deal> Deals,
             IRepository<Seller> Sellers)
         {
             _Books = Books;
-            _Sales = SalesService;
             _Buyers = Buyers;
+            _Deals = Deals;
             _Sellers = Sellers;
+            _SalesService = SalesService;
 
             //Не будет колонки Categories, т.к. она virtual, и нужно создать специальный репозиторий для книг, чтобы заработало (Создан BooksRepository)
             //var books = BooksRepository.Items.Take(10).ToArray();
