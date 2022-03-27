@@ -10,6 +10,8 @@ namespace BookinistV1
 {
     public partial class App : Application
     {
+        public static bool IsDesignTime { get; private set; } = true;
+
         //создание хоста, используя Singleton
         private static IHost __Host;
 
@@ -27,6 +29,8 @@ namespace BookinistV1
 
         protected override async void OnStartup(StartupEventArgs e)
         {
+            IsDesignTime = false;
+
             var host = Host;
 
             //если сделаем с await, бд инициализируется после открытия окна приложения

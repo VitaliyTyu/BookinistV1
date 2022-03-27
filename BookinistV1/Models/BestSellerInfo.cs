@@ -2,9 +2,10 @@
 
 namespace BookinistV1.Models
 {
-    internal class BestSellerInfo
+    public class BestSellerInfo
     {
         public Book Book { get; set; }
         public int SellCount { get; set; }
+        public decimal SummCost { get; set; }
     }
 }

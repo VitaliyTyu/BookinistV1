@@ -21,17 +21,17 @@ namespace BookinistV1.ViewModels
         private readonly IRepository<Deal> _Deals;
         private readonly ISalesService _SalesService;
 
-        internal ObservableCollection<BestSellerInfo> Bestsellers { get; } = new ObservableCollection<BestSellerInfo>();
+        public ObservableCollection<BestSellerInfo> Bestsellers { get; } = new ObservableCollection<BestSellerInfo>();
 
-        #region BooksCount : int - количество книг
-        private int _BooksCount;
+        //#region BooksCount : int - количество книг
+        //private int _BooksCount;
 
-        public int BooksCount
-        {
-            get => _BooksCount;
-            set => Set(ref _BooksCount, value);
-        }
-        #endregion
+        //public int BooksCount
+        //{
+        //    get => _BooksCount;
+        //    set => Set(ref _BooksCount, value);
+        //}
+        //#endregion
 
 
         #region ComputeStatisticCommand : Command - Вычислить статистические данные
@@ -42,28 +42,30 @@ namespace BookinistV1.ViewModels
         private async Task OnComputeStatisticCommandExecuted()
         {
             await ComputeDealsStatisticAsync();
-
-
-
-            //var bestsellers = await bestsellers_query.ToDictionaryAsync(deal => deal.Book, deal => deal.Count);
-
         }
 
         private async Task ComputeDealsStatisticAsync()
         {
             var bestsellers_query = _Deals.Items
                 .GroupBy(b => b.Book.Id)
-                .Select(deals => new { BookId = deals.Key, Count = deals.Count() })
+                .Select(deals => new { BookId = deals.Key, Count = deals.Count(), Sum = deals.Sum(d => d.Price) })
                 .OrderByDescending(deals => deals.Count)
                 .Take(5)
                 .Join(_Books.Items,
                       deals => deals.BookId,
                       book => book.Id,
-                      (deals, book) => new BestSellerInfo { Book = book, SellCount = deals.Count });
+                      (deals, book) => new BestSellerInfo 
+                      { 
+                          Book = book, 
+                          SellCount = deals.Count, 
+                          SummCost = deals.Sum 
+                      });
 
-            Bestsellers.Clear();
-            foreach (var bestseller in await bestsellers_query.ToArrayAsync())
-                Bestsellers.Add(bestseller);
+            Bestsellers.AddClear(await bestsellers_query.ToArrayAsync());
+
+
+            //foreach (var bestseller in await bestsellers_query.ToArrayAsync())
+            //    Bestsellers.Add(bestseller);
         }
 
         #endregion

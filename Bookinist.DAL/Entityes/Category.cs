@@ -13,7 +13,7 @@ namespace Bookinist.DAL.Entityes
         // virtual может как ускорить работу прилодения, так и замедлить (нужно разобраться)
         //Books - внешний ключ, но ef создаст его сам
         //в категории много книг
-        public virtual ICollection<Book> Books { get; set; }
+        public virtual ICollection<Book> Books { get; set; } = new HashSet<Book>();
         public override string ToString() => $"Категория {Name}";
 
     }
