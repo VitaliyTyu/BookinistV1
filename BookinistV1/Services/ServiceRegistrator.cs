@@ -7,6 +7,8 @@ namespace BookinistV1.Services
     static class ServiceRegistrator
     {
         public static IServiceCollection AddServices(this IServiceCollection services) => services
-            .AddTransient<ISalesService, SalesService>();
+            .AddTransient<ISalesService, SalesService>()
+            .AddTransient<IUserDialog, UserDialogService>()
+            ;
     }
 }

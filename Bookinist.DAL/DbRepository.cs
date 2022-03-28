@@ -67,7 +67,9 @@ namespace Bookinist.DAL
             //if (item is null) return;
             //_db.Entry(item);
 
-            _db.Remove(new T { Id = id }); //удалит быстрее, но мы не узнаем какая сущность была удалена
+            var item = _Set.Local.FirstOrDefault(i => i.Id == id) ?? new T { Id = id };
+
+            _db.Remove(item); //удалит быстрее, но мы не узнаем какая сущность была удалена
 
             if (AutoSaveChanges)
                 _db.SaveChanges();
