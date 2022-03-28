@@ -1,0 +1,35 @@
+﻿<UserControl x:Class="BookinistV1.Views.StatisticView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" mc:Ignorable="d" 
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:BookinistV1.Views"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             
+             xmlns:vm="clr-namespace:BookinistV1.ViewModels"
+             d:DataContext="{d:DesignInstance {x:Type vm:StatisticViewModel}}"
+             d:DesignHeight="450" d:DesignWidth="800">
+    
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding ComputeStatisticCommand}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+
+    <TabControl>
+        <TabItem Header="Книги" >
+            <GroupBox Header="Бестселлеры">
+                <DataGrid ItemsSource="{Binding Bestsellers}" IsReadOnly="True">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Книга" Width="*" Binding="{Binding Book.Name}"/>
+                        <DataGridTextColumn Header="Количество продаж" Binding="{Binding SellCount}"/>
+                        <DataGridTextColumn Header="Полная стоимость" Binding="{Binding SummCost}"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </GroupBox>
+        </TabItem>
+        <TabItem Header="Категории" />
+        <TabItem Header="Покупатели" />
+        <TabItem Header="Продавцы" />
+    </TabControl>
+</UserControl>

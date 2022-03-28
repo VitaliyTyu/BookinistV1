@@ -1,17 +1,62 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
+﻿using BookinistV1.Data;
+using BookinistV1.Services;
+using BookinistV1.ViewModels;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using System;
 using System.Linq;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace BookinistV1
 {
-    /// <summary>
-    /// Interaction logic for App.xaml
-    /// </summary>
     public partial class App : Application
     {
+        public static Window ActiveWindow => Application.Current.Windows.OfType<Window>()
+            .FirstOrDefault(w => w.IsActive);
+
+        public static Window FocusedWindow => Application.Current.Windows.OfType<Window>()
+    .FirstOrDefault(w => w.IsFocused);
+
+        public static Window CurrentWindow => FocusedWindow ?? ActiveWindow;
+
+        public static bool IsDesignTime { get; private set; } = true;
+
+        //создание хоста, используя Singleton
+        private static IHost __Host;
+
+        public static IHost Host => __Host 
+            ??= Program.CreateHostBuilder(Environment.GetCommandLineArgs()).Build();
+
+        public static IServiceProvider Services => Host.Services;
+
+
+        internal static void ConfigureServices(HostBuilderContext host, IServiceCollection services) => services
+            .AddDatabase(host.Configuration.GetSection("Database"))
+            .AddServices()
+            .AddViewModels()
+            ;
+
+
+        protected override async void OnStartup(StartupEventArgs e)
+        {
+            IsDesignTime = false;
+
+            var host = Host;
+
+            //если сделаем с await, бд инициализируется после открытия окна приложения
+            using (var scope = Services.CreateScope())
+                scope.ServiceProvider.GetRequiredService<DbInitializer>().InitializeAsync().Wait();
+            //используя Wait() можно получить deadock, чтебы его избежать нужно у асинхронных методо вызывать .ConfigureAwait(false)
+
+            base.OnStartup(e);
+            await host.StartAsync();
+        }
+
+        protected override async void OnExit(ExitEventArgs e)
+        {
+            using var host = Host;
+            base.OnExit(e);
+            await host.StopAsync();
+        }
     }
 }
